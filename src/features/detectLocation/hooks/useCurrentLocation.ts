@@ -33,7 +33,7 @@ export function useCurrentLocation() {
         setIsLoading(false);
       },
       {
-        enableHighAccuracy: true, // 정확도 최우선
+        enableHighAccuracy: true,
         timeout: 10000,
       }
     );

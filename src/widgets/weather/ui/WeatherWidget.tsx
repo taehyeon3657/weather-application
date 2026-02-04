@@ -1,6 +1,6 @@
 'use client';
 
-import { RefreshCw, MapPin } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { useCurrentWeatherQuery } from '@/entities/weather/model/weather.query';
 import { useCurrentLocation } from '@/features/detectLocation/hooks/useCurrentLocation';
 import { GlassCard } from '@/shared/ui/GlassCard';
@@ -9,33 +9,47 @@ import { WeatherSkeleton } from '@/entities/weather/ui/WeatherSkeleton';
 import { WeatherError } from '@/entities/weather/ui/WeatherError';
 import { WeatherMainInfo } from '@/entities/weather/ui/WeatherInfo';
 
-export default function WeatherWidget() {
-  const { location, isLoading: isLocLoading, error: locError } = useCurrentLocation();
+interface Props {
+  targetLocation?: {
+    lat: number;
+    lon: number;
+    name?: string;
+  } | null;
+}
+
+export default function WeatherWidget({ targetLocation }: Props) {
+  const { location: gpsLoc, isLoading: isLocLoading, error: locError } = useCurrentLocation();
+  const activeLat = targetLocation?.lat ?? gpsLoc?.lat ?? 0;
+  const activeLon = targetLocation?.lon ?? gpsLoc?.lon ?? 0;
+  const isEnabled = !!targetLocation || !!gpsLoc;
+
   const {
     data: weather,
     isLoading: isWeatherLoading,
     isError,
     refetch,
-  } = useCurrentWeatherQuery(location?.lat ?? 0, location?.lon ?? 0, {
-    enabled: !!location,
+  } = useCurrentWeatherQuery(activeLat, activeLon, {
+    enabled: isEnabled,
   });
 
-  if (isLocLoading || (location && isWeatherLoading)) return <WeatherSkeleton />;
-  if (locError || isError) return <WeatherError onRetry={() => window.location.reload()} />;
+  const isRealLoading = targetLocation
+    ? isWeatherLoading
+    : isLocLoading || (gpsLoc && isWeatherLoading);
+
+  if (isRealLoading) return <WeatherSkeleton />;
+  if (!targetLocation && locError)
+    return <WeatherError message={locError} onRetry={() => window.location.reload()} />;
+  if (isError) return <WeatherError onRetry={refetch} />;
   if (!weather) return null;
+
+  const displayName = targetLocation?.name || weather.name || weather.name;
 
   return (
     <GlassCard className="xs:max-w-[340px] max-w-[280px] sm:max-w-[380px] md:max-w-[480px] lg:max-w-[560px]">
       <div className="flex items-start justify-between">
         <div className="flex flex-col">
-          <div className="mb-1 flex items-center gap-1 text-gray-500">
-            <MapPin className="h-3 w-3 animate-bounce md:h-4 md:w-4" />
-            <span className="xs:text-xs text-[10px] font-medium tracking-wider uppercase md:text-sm">
-              Current Location
-            </span>
-          </div>
           <div className="xs:text-2xl truncate p-[4px] leading-none font-bold tracking-tight text-gray-800 md:text-3xl lg:text-4xl">
-            {weather.name}
+            {displayName}
           </div>
         </div>
         <button

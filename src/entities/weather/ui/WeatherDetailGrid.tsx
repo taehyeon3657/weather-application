@@ -14,7 +14,6 @@ export function WeatherDetailGrid({ minTemp, maxTemp }: Props) {
   );
 }
 
-// 내부용 작은 컴포넌트
 function DetailItem({ label, value, color, Icon }: any) {
   return (
     <div className="xs:p-4 flex items-center justify-between rounded-2xl border border-white/40 bg-white/40 p-3 shadow-sm md:p-5">

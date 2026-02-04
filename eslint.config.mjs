@@ -14,12 +14,9 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  // 1. 순환 참조를 일으키는 설정을 개별적으로 분리하여 가져옵니다.
   ...compat.config({
     extends: ['next/core-web-vitals', 'next/typescript'],
   }),
-
-  // 2. Prettier 설정을 별도의 객체로 분리 (직접 주입 방식)
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     plugins: {
@@ -34,7 +31,6 @@ const eslintConfig = [
     },
   },
 
-  // 3. 글로벌 무시 설정 (이 부분이 중요합니다)
   {
     ignores: [
       '.next/**/*',
@@ -42,7 +38,7 @@ const eslintConfig = [
       'dist/**/*',
       'public/**/*',
       'out/**/*',
-      'eslint.config.mjs', // 설정 파일 자체도 검사에서 제외하여 안전성 확보
+      'eslint.config.mjs',
     ],
   },
 ];
