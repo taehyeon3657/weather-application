@@ -1,13 +1,14 @@
 'use client';
 
 import { RefreshCw } from 'lucide-react';
-import { useCurrentWeatherQuery } from '@/entities/weather/model/weather.query';
-import { useCurrentLocation } from '@/features/detectLocation/hooks/useCurrentLocation';
+
 import { GlassCard } from '@/shared/ui/GlassCard';
 import { WeatherDetailGrid } from '@/entities/weather/ui/WeatherDetailGrid';
 import { WeatherSkeleton } from '@/entities/weather/ui/WeatherSkeleton';
 import { WeatherError } from '@/entities/weather/ui/WeatherError';
 import { WeatherMainInfo } from '@/entities/weather/ui/WeatherInfo';
+import { useCurrentWeatherQuery } from '@/entities/weather/model/weather.query';
+import { useCurrentLocation } from '@/features/detectLocation/model/useCurrentLocation';
 
 interface Props {
   targetLocation?: {
@@ -37,18 +38,17 @@ export default function WeatherWidget({ targetLocation }: Props) {
     : isLocLoading || (gpsLoc && isWeatherLoading);
 
   if (isRealLoading) return <WeatherSkeleton />;
-  if (!targetLocation && locError)
-    return <WeatherError message={locError} onRetry={() => window.location.reload()} />;
-  if (isError) return <WeatherError onRetry={refetch} />;
+  if (!targetLocation && locError) return <WeatherError message={locError} />;
+  if (isError) return <WeatherError />;
   if (!weather) return null;
 
   const displayName = targetLocation?.name || weather.name || weather.name;
 
   return (
     <GlassCard className="xs:max-w-[340px] max-w-[280px] sm:max-w-[380px] md:max-w-[480px] lg:max-w-[560px]">
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between gap-[32px]">
         <div className="flex flex-col">
-          <div className="xs:text-2xl truncate p-[4px] leading-none font-bold tracking-tight text-gray-800 md:text-3xl lg:text-4xl">
+          <div className="xs:text-2xl p-[4px] leading-tight font-bold tracking-tight break-words text-gray-800 md:text-3xl lg:text-4xl">
             {displayName}
           </div>
         </div>

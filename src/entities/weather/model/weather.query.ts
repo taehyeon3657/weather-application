@@ -1,9 +1,9 @@
 import { useQuery, type UseQueryOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-
 import type { CurrentWeather } from '../model/types';
-import { weatherKeys } from './queryKey';
+
 import { getWeather } from '../api/weather.service';
+import { weatherKeys } from './queryKey';
 
 export function useCurrentWeatherQuery(
   lat: number,

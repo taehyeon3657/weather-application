@@ -8,5 +8,6 @@
   "javascript.preferences.quoteStyle": "single",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
-  }
+  },
+  "jira-plugin.workingProject": ""
 }

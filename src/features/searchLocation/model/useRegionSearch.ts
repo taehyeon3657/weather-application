@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import districtData from '@/shared/data/korea_districts.json';
 
 export function useRegionSearch() {
@@ -16,10 +16,10 @@ export function useRegionSearch() {
     const query = keyword.replace(/\s+/g, '');
 
     const filtered = districtData.filter((item) => {
-      const cleanItem = item.replace(/-/g, '').replace(/\s+/g, '');
+      const cleanItem = item.replaceAll('-', '').replace(/\s+/g, '');
       return cleanItem.includes(query);
     });
-    setResults(filtered.slice(0, 20));
+    setResults(filtered);
   }, [keyword]);
 
   return { keyword, setKeyword, results };

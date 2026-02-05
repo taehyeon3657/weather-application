@@ -24,7 +24,7 @@ module.exports = {
         },
       },
       animation: {
-        float: 'float 6s ease-in-out infinite', // 3초는 너무 빨라 6초로 수정하여 우아하게
+        float: 'float 6s ease-in-out infinite',
         'pulse-slow': 'pulseSlow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
     },
