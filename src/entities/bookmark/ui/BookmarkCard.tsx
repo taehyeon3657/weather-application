@@ -12,7 +12,10 @@ export function BookmarkCard({ location }: Props) {
   const { isEditing, aliasInput, weather, handlers } = useBookmarkCard(location);
 
   return (
-    <GlassCard className="relative p-5 transition-transform hover:-translate-y-1">
+    <GlassCard
+      onClick={handlers.handleCardClick}
+      className="relative p-5 transition-transform hover:-translate-y-1"
+    >
       <div className="mb-4 flex items-center justify-between gap-2">
         <div className="flex h-8 items-center gap-2">
           {isEditing ? (

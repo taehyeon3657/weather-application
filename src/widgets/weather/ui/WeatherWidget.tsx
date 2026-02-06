@@ -60,7 +60,9 @@ export default function WeatherWidget({ targetLocation }: Props) {
           <RefreshCw className="h-4 w-4 md:h-5 md:w-5" />
         </button>
       </div>
-      {weather && <BookmarkToggleButton lat={activeLat} lon={activeLon} name={displayName} />}
+      {weather && targetLocation && (
+        <BookmarkToggleButton lat={activeLat} lon={activeLon} name={displayName} />
+      )}
       <WeatherMainInfo
         temp={weather.main.temp}
         description={weather.weather[0].description}
