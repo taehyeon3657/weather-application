@@ -1,22 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { Bookmarks } from '..';
 
-export interface BookmarkLocation {
-  lat: number;
-  lon: number;
-  name: string;
-  alias?: string;
-}
-
-interface BookmarksState {
-  bookmarks: BookmarkLocation[];
-  addBookmark: (loc: BookmarkLocation) => void;
-  removeBookmark: (lat: number, lon: number) => void;
-  isBookmark: (lat: number, lon: number) => boolean;
-  updateAlias: (lat: number, lon: number, alias: string) => void;
-}
-
-export const useBookmarkStore = create<BookmarksState>()(
+export const useBookmarkStore = create<Bookmarks>()(
   persist(
     (set, get) => ({
       bookmarks: [],

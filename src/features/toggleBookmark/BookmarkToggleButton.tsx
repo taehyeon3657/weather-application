@@ -1,7 +1,7 @@
 'use client';
 
+import { useBookmarkStore } from '@/entities/bookmark';
 import { Heart } from 'lucide-react';
-import { useBookmarkStore } from '@/entities/bookmark/model/bookmark.store';
 
 interface Props {
   lat: number;

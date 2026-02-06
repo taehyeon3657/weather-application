@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useCurrentWeatherQuery } from '@/entities/weather/model/weather.query';
-import { useBookmarkStore, type BookmarkLocation } from './bookmark.store';
+import { useBookmarkStore } from './bookmark.store';
+import { BookmarkLocation } from './types';
 
 export function useBookmarkCard(location: BookmarkLocation) {
   const { removeBookmark, updateAlias } = useBookmarkStore();

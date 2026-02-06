@@ -2,8 +2,7 @@
 
 import { GlassCard } from '@/shared/ui/GlassCard';
 import { Trash2 } from 'lucide-react';
-import { BookmarkLocation } from '../model/bookmark.store';
-import { useBookmarkCard } from '../model/useBookmarkCard';
+import { BookmarkLocation, useBookmarkCard } from '..';
 
 interface Props {
   location: BookmarkLocation;
