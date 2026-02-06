@@ -1,7 +1,7 @@
 'use client';
 
-import { useBookmarkStore } from '@/entities/bookmark';
 import { Heart } from 'lucide-react';
+import { useBookmarkToggle } from '..';
 
 interface Props {
   lat: number;
@@ -9,27 +9,12 @@ interface Props {
   name: string;
 }
 
-export function BookmarkToggleButton({ lat, lon, name }: Props) {
-  const bookmarks = useBookmarkStore((state) => state.bookmarks);
-
-  const addBookmark = useBookmarkStore((state) => state.addBookmark);
-  const removeBookmark = useBookmarkStore((state) => state.removeBookmark);
-
-  const isFav = bookmarks.some((item) => item.lat === lat && item.lon === lon);
-
-  const toggle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-
-    if (isFav) {
-      removeBookmark(lat, lon);
-    } else {
-      addBookmark({ lat, lon, name });
-    }
-  };
+export function BookmarkToggleButton(props: Props) {
+  const { isFav, handleToggle } = useBookmarkToggle(props);
 
   return (
     <button
-      onClick={toggle}
+      onClick={handleToggle}
       className={`group relative flex items-center justify-center rounded-full p-2 transition-all duration-300 ${
         isFav
           ? 'bg-pink-100 text-pink-500 hover:bg-pink-200'

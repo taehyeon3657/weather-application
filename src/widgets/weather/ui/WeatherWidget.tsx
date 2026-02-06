@@ -9,7 +9,7 @@ import { WeatherError } from '@/entities/weather/ui/WeatherError';
 import { WeatherMainInfo } from '@/entities/weather/ui/WeatherInfo';
 import { useCurrentWeatherQuery } from '@/entities/weather/model/weather.query';
 import { useCurrentLocation } from '@/features/detectLocation/model/useCurrentLocation';
-import { BookmarkToggleButton } from '@/features/toggleBookmark/BookmarkToggleButton';
+import { BookmarkToggleButton } from '@/features/toggleBookmark';
 
 interface Props {
   targetLocation?: {
