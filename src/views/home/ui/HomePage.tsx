@@ -7,6 +7,7 @@ import { BookmarkCard } from '@/entities/bookmark/ui/BookmarkCard';
 import { SearchBar } from '@/features/searchLocation/ui/SearchBar';
 import { ViewModeToggle } from './ViewModeToggle';
 import { useHomePage } from '../model/useHomePage';
+import { ViewMode } from '../model/types';
 
 export function HomePage() {
   const { viewMode, selectedLocation, searchError, resetKey, bookmarks, handlers } = useHomePage();
@@ -16,7 +17,7 @@ export function HomePage() {
       <div className="fixed top-6 left-1/2 z-50 flex w-full max-w-md -translate-x-1/2 flex-col items-center gap-4 px-4">
         <div
           className={`w-full transition-all duration-300 ${
-            viewMode === 'bookmark' ? 'pointer-events-none opacity-50' : 'opacity-100'
+            viewMode === ViewMode.BOOKMARK ? 'pointer-events-none opacity-50' : 'opacity-100'
           }`}
         >
           <SearchBar
@@ -30,7 +31,7 @@ export function HomePage() {
       </div>
 
       <div className="mt-20 flex w-full max-w-4xl justify-center">
-        {viewMode === 'search' && (
+        {viewMode === ViewMode.SEARCH && (
           <div className="animate-fade-in flex w-full flex-col items-center gap-8">
             {searchError ? (
               <WeatherError message={searchError} />
@@ -48,7 +49,7 @@ export function HomePage() {
             )}
           </div>
         )}
-        {viewMode === 'bookmark' && (
+        {viewMode === ViewMode.BOOKMARK && (
           <div className="animate-fade-in w-full">
             {bookmarks.length === 0 ? (
               <div className="py-20 text-center text-gray-500">
