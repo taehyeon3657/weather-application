@@ -24,12 +24,16 @@ export function BookmarkCard({ location }: Props) {
               onChange={handlers.handleChangeInput}
               onBlur={handlers.handleSave}
               onKeyDown={handlers.handleKeyDown}
+              onClick={(e) => e.stopPropagation()}
               className="w-32 rounded bg-white/50 px-2 py-1 text-lg font-bold text-gray-400 ring-2 ring-blue-300 transition-all outline-none"
               autoFocus
             />
           ) : (
             <h3
-              onClick={handlers.handleStartEdit}
+              onClick={(e) => {
+                e.stopPropagation();
+                handlers.handleStartEdit();
+              }}
               className="max-w-[140px] cursor-pointer truncate text-lg font-bold text-gray-800 decoration-gray-400 decoration-dotted underline-offset-4 hover:text-blue-600 hover:underline"
             >
               {location.alias || location.name}
