@@ -13,13 +13,16 @@ export function useRegionSearch() {
       return;
     }
 
-    const query = keyword.replace(/\s+/g, '');
+    const timer = setTimeout(() => {
+      const query = keyword.replace(/\s+/g, '');
+      const filtered = districtData.filter((item) => {
+        const cleanItem = item.replaceAll('-', '').replace(/\s+/g, '');
+        return cleanItem.includes(query);
+      });
+      setResults(filtered);
+    }, 300);
 
-    const filtered = districtData.filter((item) => {
-      const cleanItem = item.replaceAll('-', '').replace(/\s+/g, '');
-      return cleanItem.includes(query);
-    });
-    setResults(filtered);
+    return () => clearTimeout(timer);
   }, [keyword]);
 
   return { keyword, setKeyword, results };
