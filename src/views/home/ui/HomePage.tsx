@@ -1,43 +1,15 @@
+// src/views/home/ui/HomePage.tsx
 'use client';
-
-import { useState } from 'react';
 
 import WeatherWidget from '@/widgets/weather/ui/WeatherWidget';
 import { WeatherError } from '@/entities/weather/ui/WeatherError';
-import { useBookmarkStore } from '@/entities/bookmark/model/bookmark.store';
 import { BookmarkCard } from '@/entities/bookmark/ui/BookmarkCard';
 import { SearchBar } from '@/features/searchLocation/ui/SearchBar';
-import { ViewModeToggle } from './ui/ViewModeToggle';
-
-interface TargetLoc {
-  lat: number;
-  lon: number;
-  name: string;
-}
+import { ViewModeToggle } from './ViewModeToggle';
+import { useHomePage } from '../model/useHomePage';
 
 export function HomePage() {
-  const [viewMode, setViewMode] = useState<'search' | 'bookmark'>('search');
-  const [selectedLocation, setSelectedLocation] = useState<TargetLoc | null>(null);
-  const [searchError, setSearchError] = useState<string | null>(null);
-  const [resetKey, setResetKey] = useState(0);
-  const bookmarks = useBookmarkStore((state) => state.bookmarks);
-
-  const handleSelectLocation = (loc: TargetLoc) => {
-    setSelectedLocation(loc);
-    setSearchError(null);
-    setViewMode('search');
-  };
-
-  const handleSearchError = (msg: string) => {
-    setSelectedLocation(null);
-    setSearchError(msg);
-  };
-
-  const handleReset = () => {
-    setSearchError(null);
-    setSelectedLocation(null);
-    setResetKey((prev) => prev + 1);
-  };
+  const { viewMode, selectedLocation, searchError, resetKey, bookmarks, handlers } = useHomePage();
 
   return (
     <main className="relative flex min-h-screen w-full flex-col items-center justify-center gap-8 bg-gradient-to-br from-blue-100 via-blue-50 to-purple-100 px-4 py-20">
@@ -49,12 +21,12 @@ export function HomePage() {
         >
           <SearchBar
             key={resetKey}
-            onSelectLocation={handleSelectLocation}
-            onSearchError={handleSearchError}
+            onSelectLocation={handlers.handleSelectLocation}
+            onSearchError={handlers.handleSearchError}
             selectedLocation={selectedLocation}
           />
         </div>
-        <ViewModeToggle mode={viewMode} setMode={setViewMode} />
+        <ViewModeToggle mode={viewMode} setMode={handlers.setViewMode} />
       </div>
 
       <div className="mt-20 flex w-full max-w-4xl justify-center">
@@ -68,7 +40,7 @@ export function HomePage() {
 
             {!searchError && selectedLocation && (
               <button
-                onClick={handleReset}
+                onClick={handlers.handleReset}
                 className="animate-fade-in rounded-full bg-white/50 px-6 py-2 text-sm font-semibold text-gray-600 shadow-sm transition-all hover:bg-white/80 active:scale-95"
               >
                 📍 내 위치로 돌아가기
