@@ -1,58 +1,47 @@
 'use client';
 
-import { useCurrentWeatherQuery } from '@/entities/weather/model/weather.query';
-
 import { GlassCard } from '@/shared/ui/GlassCard';
-import { Trash2, Edit2 } from 'lucide-react';
-import { useState } from 'react';
-import { BookmarkLocation, useBookmarkStore } from '../model/bookmark.store';
+import { Trash2 } from 'lucide-react';
+import { BookmarkLocation } from '../model/bookmark.store';
+import { useBookmarkCard } from '../model/useBookmarkCard';
 
 interface Props {
   location: BookmarkLocation;
 }
 
 export function BookmarkCard({ location }: Props) {
-  const { removeBookmark, updateAlias } = useBookmarkStore();
-  const [isEditing, setIsEditing] = useState(false);
-  const [aliasInput, setAliasInput] = useState(location.alias || location.name);
-
-  const { data: weather } = useCurrentWeatherQuery(location.lat, location.lon);
-
-  const handleRename = () => {
-    if (isEditing) {
-      updateAlias(location.lat, location.lon, aliasInput);
-    }
-    setIsEditing(!isEditing);
-  };
+  const { isEditing, aliasInput, weather, handlers } = useBookmarkCard(location);
 
   return (
     <GlassCard className="relative p-5 transition-transform hover:-translate-y-1">
-      <div className="mb-4 flex items-start justify-between">
-        <div className="flex items-center gap-2">
+      <div className="mb-4 flex items-center justify-between gap-2">
+        <div className="flex h-8 items-center gap-2">
           {isEditing ? (
             <input
               value={aliasInput}
-              onChange={(e) => setAliasInput(e.target.value)}
-              className="w-32 rounded bg-white/50 px-2 py-1 text-sm font-bold"
+              onChange={handlers.handleChangeInput}
+              onBlur={handlers.handleSave}
+              onKeyDown={handlers.handleKeyDown}
+              className="w-32 rounded bg-white/50 px-2 py-1 text-lg font-bold text-gray-400 ring-2 ring-blue-300 transition-all outline-none"
               autoFocus
             />
           ) : (
-            <h3 className="max-w-[140px] truncate text-lg font-bold text-gray-800">
+            <h3
+              onClick={handlers.handleStartEdit}
+              className="max-w-[140px] cursor-pointer truncate text-lg font-bold text-gray-800 decoration-gray-400 decoration-dotted underline-offset-4 hover:text-blue-600 hover:underline"
+            >
               {location.alias || location.name}
             </h3>
           )}
-          <button onClick={handleRename} className="text-gray-400 hover:text-blue-500">
-            <Edit2 className="h-3 w-3" />
-          </button>
         </div>
-
         <button
-          onClick={() => removeBookmark(location.lat, location.lon)}
+          onClick={handlers.handleDelete}
           className="text-gray-400 transition-colors hover:text-red-500"
         >
           <Trash2 className="h-4 w-4" />
         </button>
       </div>
+
       {weather ? (
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
